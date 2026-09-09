@@ -133,7 +133,9 @@ export default function PostsListPage() {
       {/* Search */}
       <div className="mb-6 border rounded-lg shadow-sm bg-card border-border">
         <form onSubmit={handleSearch} className="flex gap-2 p-4">
+          <label htmlFor="post-search-type" className="sr-only">검색 조건</label>
           <select
+            id="post-search-type"
             value={searchType}
             onChange={(e) => setSearchType(e.target.value as ContentSearchType)}
             className="px-3 py-2 text-sm border rounded-lg outline-none border-border text-text bg-bg"
@@ -144,11 +146,13 @@ export default function PostsListPage() {
             <option value="TAG">태그</option>
           </select>
           <div className="flex items-center flex-1 px-3 py-2 border rounded-lg bg-bg border-border">
+            <label htmlFor="post-search-query" className="sr-only">검색어</label>
             <svg
               className="flex-shrink-0 w-4 h-4 mr-2 text-text-light"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -158,6 +162,7 @@ export default function PostsListPage() {
               />
             </svg>
             <input
+              id="post-search-query"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

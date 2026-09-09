@@ -34,10 +34,10 @@ function ToolbarButton({ onClick, active, disabled, title, children }: ToolbarBu
   return (
     <button
       type="button"
-      onMouseDown={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
+      // 마우스 클릭 시 에디터 선택 영역이 풀리는 것만 막고, 실제 실행은 onClick에서 처리한다.
+      // (onMouseDown에서 실행하면 키보드 Enter/Space로는 동작하지 않아 접근성이 깨진다)
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
       disabled={disabled}
       title={title}
       aria-label={title}
@@ -80,6 +80,12 @@ export default function TipTapEditor({ value, onChange, disabled = false, placeh
     content: value,
     immediatelyRender: false,
     editable: !disabled,
+    editorProps: {
+      attributes: {
+        'aria-label': '본문 내용',
+        'aria-multiline': 'true',
+      },
+    },
     onUpdate: ({ editor }) => {
       onChange(editor.storage.markdown.getMarkdown());
     },
@@ -145,7 +151,11 @@ export default function TipTapEditor({ value, onChange, disabled = false, placeh
   return (
     <div className={disabled ? 'opacity-50' : ''}>
       {/* Toolbar */}
-      <div className="sticky top-28 z-[5] flex flex-wrap items-center gap-0.5 py-2 border-b border-border bg-bg/95 backdrop-blur">
+      <div
+        role="toolbar"
+        aria-label="서식 도구 모음"
+        className="sticky top-28 z-[5] flex flex-wrap items-center gap-0.5 py-2 border-b border-border bg-bg/95 backdrop-blur"
+      >
         {/* Headings */}
         <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive('heading', { level: 1 })} title="제목 1">H1</ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive('heading', { level: 2 })} title="제목 2">H2</ToolbarButton>

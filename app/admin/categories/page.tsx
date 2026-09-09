@@ -48,8 +48,9 @@ function AddPanel({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
         {/* 카테고리명 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">카테고리명 *</label>
+          <label htmlFor="cat-add-name" className="text-xs font-medium text-text-light">카테고리명 *</label>
           <input
+            id="cat-add-name"
             type="text"
             value={addName}
             onChange={e => onNameChange(e.target.value)}
@@ -67,8 +68,9 @@ function AddPanel({
 
         {/* 상위 카테고리 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">상위 카테고리</label>
+          <label htmlFor="cat-add-parent" className="text-xs font-medium text-text-light">상위 카테고리</label>
           <select
+            id="cat-add-parent"
             value={addParent ?? ''}
             onChange={e => onParentChange(e.target.value ? Number(e.target.value) : null)}
             className="px-3 py-2 text-sm border border-border rounded-lg bg-white text-text
@@ -85,8 +87,9 @@ function AddPanel({
 
         {/* 노출 순서 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">노출 순서</label>
+          <label htmlFor="cat-add-disp-ord" className="text-xs font-medium text-text-light">노출 순서</label>
           <input
+            id="cat-add-disp-ord"
             type="number"
             value={addDispOrd}
             onChange={e => onDispOrdChange(e.target.value ? Number(e.target.value) : '')}
@@ -151,8 +154,9 @@ function EditPanel({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* 카테고리명 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">카테고리명</label>
+          <label htmlFor="cat-edit-name" className="text-xs font-medium text-text-light">카테고리명</label>
           <input
+            id="cat-edit-name"
             type="text"
             value={editName}
             onChange={e => onNameChange(e.target.value)}
@@ -169,8 +173,9 @@ function EditPanel({
 
         {/* 상위 카테고리 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">상위 카테고리</label>
+          <label htmlFor="cat-edit-parent" className="text-xs font-medium text-text-light">상위 카테고리</label>
           <select
+            id="cat-edit-parent"
             value={editUpperCateNo ?? ''}
             onChange={e => onUpperChange(e.target.value ? Number(e.target.value) : null)}
             className="px-3 py-2 text-sm border border-border rounded-lg bg-white text-text
@@ -187,8 +192,9 @@ function EditPanel({
 
         {/* 노출 순서 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">노출 순서</label>
+          <label htmlFor="cat-edit-disp-ord" className="text-xs font-medium text-text-light">노출 순서</label>
           <input
+            id="cat-edit-disp-ord"
             type="number"
             value={editDispOrd}
             onChange={e => onDispOrdChange(e.target.value ? Number(e.target.value) : '')}
@@ -201,13 +207,14 @@ function EditPanel({
 
         {/* 사용 여부 */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-text-light">사용 여부</label>
-          <div className="flex gap-2">
+          <span id="cat-edit-useyn-label" className="text-xs font-medium text-text-light">사용 여부</span>
+          <div className="flex gap-2" role="group" aria-labelledby="cat-edit-useyn-label">
             {(['Y', 'N'] as const).map(v => (
               <button
                 key={v}
                 type="button"
                 onClick={() => onUseYnChange(v)}
+                aria-pressed={editUseYn === v}
                 className={`flex-1 py-2 text-sm font-medium rounded-lg border transition-colors
                   ${editUseYn === v
                     ? v === 'Y'

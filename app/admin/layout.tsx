@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
       <div className="lg:ml-64 flex flex-col min-h-screen">
-        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} sidebarOpen={sidebarOpen} />
 
         <main id="main-content" className="flex-1 p-6">{children}</main>
       </div>

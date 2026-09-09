@@ -107,9 +107,10 @@ export default function PostSettingsDrawer({
 
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-6">
           <div>
-            <h3 className="mb-2 text-sm font-semibold tracking-wider uppercase text-text">카테고리</h3>
-            {categoryError && <p className="mb-2 text-xs text-danger">{categoryError}</p>}
+            <h3 id="post-settings-category-label" className="mb-2 text-sm font-semibold tracking-wider uppercase text-text">카테고리</h3>
+            {categoryError && <p className="mb-2 text-xs text-danger" role="alert">{categoryError}</p>}
             <select
+              aria-labelledby="post-settings-category-label"
               value={selectedCateNo ?? ''}
               onChange={(e) => onCateNoChange(e.target.value ? Number(e.target.value) : null)}
               disabled={saving}
