@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -62,6 +62,18 @@ export default function Sidebar({ open, onOpenChange }: SidebarProps) {
   const pathname = usePathname();
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({ '게시물': true });
 
+  // lg 미만에서 사이드바가 닫혀 있으면 화면 밖으로 밀려 보이지 않지만 DOM에는 남아 있어
+  // 키보드 Tab / 스크린리더가 숨겨진 메뉴로 들어갈 수 있다. 이때 inert로 상호작용을 차단한다.
+  const [isDesktop, setIsDesktop] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  const inert = !open && !isDesktop;
+
   function toggleMenu(label: string) {
     setExpandedMenus(prev => ({ ...prev, [label]: !prev[label] }));
   }
@@ -77,11 +89,14 @@ export default function Sidebar({ open, onOpenChange }: SidebarProps) {
         <div
           className="fixed inset-0 bg-black/50 z-20 lg:hidden"
           onClick={() => onOpenChange(false)}
+          aria-hidden="true"
         />
       )}
 
       {/* Sidebar */}
       <aside
+        id="primary-sidebar"
+        inert={inert || undefined}
         className={`fixed top-0 left-0 h-full w-64 bg-sidebar z-30 transition-transform duration-300 flex flex-col
           ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
       >
@@ -93,7 +108,7 @@ export default function Sidebar({ open, onOpenChange }: SidebarProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-4">
+        <nav aria-label="주 메뉴" className="flex-1 overflow-y-auto py-4">
           <ul className="space-y-1">
             {menuItems.map((item) => (
               <li key={item.label}>
@@ -140,6 +155,7 @@ export default function Sidebar({ open, onOpenChange }: SidebarProps) {
                           <li key={child.href}>
                             <Link
                               href={child.href}
+                              aria-current={isActive(child.href) ? 'page' : undefined}
                               className={`block pl-14 pr-6 py-2.5 text-sm transition-colors
                                 ${isActive(child.href) ? 'text-white bg-sidebar-active' : 'text-gray-400 hover:text-white hover:bg-sidebar-hover'}`}
                             >
@@ -154,6 +170,7 @@ export default function Sidebar({ open, onOpenChange }: SidebarProps) {
                   // Single menu item
                   <Link
                     href={item.href!}
+                    aria-current={isActive(item.href!) ? 'page' : undefined}
                     className={`flex items-center gap-3 px-6 py-3 text-sm transition-colors
                       ${isActive(item.href!) ? 'text-white bg-sidebar-active border-r-3 border-primary' : 'text-gray-300 hover:bg-sidebar-hover hover:text-white'}`}
                   >

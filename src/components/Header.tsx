@@ -10,11 +10,12 @@ import Image from 'next/image';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
+  sidebarOpen: boolean;
 }
 
 const UNREAD_NOTIFICATION_COUNT = 3;
 
-export default function Header({ onToggleSidebar }: HeaderProps) {
+export default function Header({ onToggleSidebar, sidebarOpen }: HeaderProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [headerSearch, setHeaderSearch] = useState('');
@@ -94,7 +95,9 @@ export default function Header({ onToggleSidebar }: HeaderProps) {
         <div className="flex items-center gap-4">
           <button
             onClick={onToggleSidebar}
-            aria-label="사이드바 메뉴 열기"
+            aria-label={sidebarOpen ? '사이드바 메뉴 닫기' : '사이드바 메뉴 열기'}
+            aria-expanded={sidebarOpen}
+            aria-controls="primary-sidebar"
             className={`lg:hidden text-text-light hover:text-text transition-colors ${focusRing}`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
