@@ -44,13 +44,13 @@ const COLUMN_LABELS: Record<string, string> = {
   totalCommentCnt: '누적 댓글수',
 };
 
-interface DataTableProps {
-  rows: Record<string, unknown>[];
+interface DataTableProps<T extends object> {
+  rows: T[];
   columns?: string[];
   loading?: boolean;
 }
 
-function DataTable({ rows, columns, loading }: DataTableProps) {
+function DataTable<T extends object>({ rows, columns, loading }: DataTableProps<T>) {
   if (loading || rows.length === 0) {
     return (
       <div className="tbl-empty" role="status" aria-live="polite">
@@ -58,7 +58,8 @@ function DataTable({ rows, columns, loading }: DataTableProps) {
       </div>
     );
   }
-  const keys = columns ? columns.filter(k => k in rows[0]) : Object.keys(rows[0]);
+  const records = rows as ReadonlyArray<Record<string, unknown>>;
+  const keys = columns ? columns.filter(k => k in records[0]) : Object.keys(records[0]);
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -70,11 +71,11 @@ function DataTable({ rows, columns, loading }: DataTableProps) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, i) => (
+          {records.map((row, i) => (
             <tr key={i} className="tbl-tr">
               {keys.map(k => (
                 <td key={k} className="tbl-td">
-                  {Array.isArray(row[k]) ? row[k].join(', ') : String(row[k] ?? '-')}
+                  {Array.isArray(row[k]) ? (row[k] as unknown[]).join(', ') : String(row[k] ?? '-')}
                 </td>
               ))}
             </tr>
