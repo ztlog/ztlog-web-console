@@ -4,15 +4,17 @@
   --color-bg: #f5f7fa;
   --color-card: #ffffff;
   --color-sidebar: #1a1a2e;
-  --color-primary: #4e73df;
-  --color-primary-hover: #3a5bc7;
+  /* primary/danger/success — darkened so 14px white text on the solid fill and the
+     colored-text-on-10%-tint patterns both clear WCAG AA 4.5:1 (was #4e73df / #e74a3b / #1cc88a) */
+  --color-primary: #4062c9;
+  --color-primary-hover: #33509c;
   --color-text: #333333;
   /* #6b6f80 — darkened from #858796 to meet WCAG AA 4.5:1 contrast on white/card backgrounds */
   --color-text-light: #6b6f80;
   --color-border: #e3e6f0;
-  --color-success: #1cc88a;
+  --color-success: #12724f;
   --color-warning: #f6c23e;
-  --color-danger: #e74a3b;
+  --color-danger: #c62d1b;
 }
 
 body {
